@@ -19,8 +19,8 @@ from modelgauge.sut import PromptResponseSUT
 from modelgauge.sut_capabilities_verification import assert_sut_capabilities
 from modelgauge.sut_decorator import assert_is_sut
 from modelgauge.test_decorator import assert_is_test
-from typing import List, Optional
-from rich.progress import track
+from tqdm import tqdm
+from typing import List, Optional, Callable
 
 
 def run_prompt_response_test(
@@ -30,7 +30,7 @@ def run_prompt_response_test(
     max_test_items: Optional[int] = None,
     use_caching: bool = True,
     disable_progress_bar: bool = False,
-    progress_bar = track,
+    update: Optional[Callable[[], None]] = None
 ) -> TestRecord:
     """Demonstration for how to run a single Test on a single SUT, all calls serial."""
 
@@ -80,7 +80,7 @@ def run_prompt_response_test(
     test_item_records = []
     measured_test_items = []
     desc = f"Processing TestItems for test={test.uid} sut={sut.uid}"
-    for test_item in progress_bar(test_items, description=desc):
+    for test_item in tqdm(test_items, desc=desc, disable=disable_progress_bar):
         test_item_record = _process_test_item(
             test_item, test, sut, sut_cache, annotators
         )
@@ -91,6 +91,8 @@ def run_prompt_response_test(
                 measurements=test_item_record.measurements,
             )
         )
+        if (update):
+            update()
     test_result = TestResult.from_instance(
         test.aggregate_measurements(measured_test_items)
     )
