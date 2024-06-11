@@ -59,6 +59,7 @@ click = "^8.1.7"
 typing-extensions = "^4.10.0"
 tenacity = "^8.3.0"
 
+rich = "^13.7.1"
 [tool.poetry.group.dev.dependencies]
 modelgauge_demo_plugin = {path = "demo_plugin", develop = true, optional=true}
 modelgauge_standard_tests = {path = "plugins/standard_tests", develop = true, optional=true}
