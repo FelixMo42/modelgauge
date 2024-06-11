@@ -80,7 +80,7 @@ def run_prompt_response_test(
     test_item_records = []
     measured_test_items = []
     desc = f"Processing TestItems for test={test.uid} sut={sut.uid}"
-    for test_item in progress_bar(test_items, description=desc, disable=disable_progress_bar):
+    for test_item in progress_bar(test_items, description=desc):
         test_item_record = _process_test_item(
             test_item, test, sut, sut_cache, annotators
         )
