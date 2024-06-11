@@ -30,6 +30,7 @@ def run_prompt_response_test(
     max_test_items: Optional[int] = None,
     use_caching: bool = True,
     disable_progress_bar: bool = False,
+    progress_bar = tqdm,
 ) -> TestRecord:
     """Demonstration for how to run a single Test on a single SUT, all calls serial."""
 
@@ -79,7 +80,7 @@ def run_prompt_response_test(
     test_item_records = []
     measured_test_items = []
     desc = f"Processing TestItems for test={test.uid} sut={sut.uid}"
-    for test_item in tqdm(test_items, desc=desc, disable=disable_progress_bar):
+    for test_item in progress_bar(test_items, desc=desc, disable=disable_progress_bar):
         test_item_record = _process_test_item(
             test_item, test, sut, sut_cache, annotators
         )
